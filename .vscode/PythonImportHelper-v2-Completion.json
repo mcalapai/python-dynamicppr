@@ -1,0 +1,335 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "is_float_number",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:\n        for line in infile:",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_ppr_keyword",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:\n        for line in infile:\n            pos = line.find(keyword)\n            if pos >= 0:\n                s = line.find(' ', pos)\n                t = line.find(' ', s+1)\n                if (is_float_number(line[s+1 : t])):\n                    throughput = line[s+1 : t]",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "get_source_vertex_ids",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def get_source_vertex_ids(filename):\n    ids = []\n    with open(filename) as infile:\n        for line in infile:\n            num = str(int(line))\n            if (len(num) > 0):\n                ids.append(num)\n    return ids\ndef extract_main_loop(extract_function):\n    for data_set in _data_sets:",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_main_loop",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_main_loop(extract_function):\n    for data_set in _data_sets:\n        print \"data_set=%s\" % data_set\n        for source_feature in _source_features:\n            source_vertex_file = _source_dir + '/' + data_set + '_' + source_feature + '.txt'\n            source_vertex_ids = get_source_vertex_ids(source_vertex_file)\n            source_vertex_ids = source_vertex_ids[_source_vertex_start_index:_source_vertex_end_index]\n            extract_function(data_set, source_vertex_ids)\ndef extract_batch_size(data_set, source_vertex_ids):\n    print \"=== extract_batch_size ===\"",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_batch_size",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_batch_size(data_set, source_vertex_ids):\n    print \"=== extract_batch_size ===\"\n    _batch_sizes = ['1', '10', '100', '1000', '10000', '100000', '1000000']\n    for batch_size in _batch_sizes:\n        throughput_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'batch_size_' + data_set + '_' + batch_size + '_' + source_vertex_id + '.txt'\n            throughput = extract_ppr_keyword(filename, 'ppr_throughput')\n            #print \"filename=%s, throughput=%f\" % (filename, throughput)\n            throughput_sum += throughput",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_variant",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_variant(data_set, source_vertex_ids):\n    print \"=== extract_variant ===\"\n    _variants = ['0','1','2','3']\n    for variant in _variants:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'op_cpu_' + variant + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_epsilon",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_epsilon(data_set, source_vertex_ids):\n    print \"=== extract_epsilon ===\"\n    _errors = ['1e5', '1e6', '1e7', '1e8', '1e9', '1e10']\n    for error in _errors:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'error_cpu_' + error + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_source_features",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_source_features():\n    print \"=== extract_source_features ===\"\n    _source_features = ['top10', 'top1000', 'top1000000']\n    for data_set in _data_sets:\n        print \"data_set=%s\" % data_set\n        for source_feature in _source_features:\n            source_vertex_file = _source_dir + '/' + data_set + '_' + source_feature + '.txt'\n            source_vertex_ids = get_source_vertex_ids(source_vertex_file)\n            source_vertex_ids = source_vertex_ids[_source_vertex_start_index:_source_vertex_end_index]\n            latency_sum = 0",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_batch_ratios",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_batch_ratios(data_set, source_vertex_ids):\n    print \"=== extract_batch_ratios ===\"\n    _batch_ratios = ['0.01', '0.001', '0.0001']\n    for batch_ratio in _batch_ratios:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'batch_ratio_' + batch_ratio + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_scalability",
+        "kind": 2,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "def extract_scalability(data_set, source_vertex_ids):\n    print \"=== extract_scalability ===\"\n    _thread_nums = ['1', '8', '16', '24', '32', '40']\n    for thread_num in _thread_nums:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'scalability_' + thread_num + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_throughput')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_features",
+        "kind": 5,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "_source_features = ['top10']\n_log_dir='log'\n_source_dir='exp_vids'\n_source_vertex_start_index = 3\n_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_vertex_start_index",
+        "kind": 5,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "_source_vertex_start_index = 3\n_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_vertex_end_index",
+        "kind": 5,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "#_source_vertex_start_index",
+        "kind": 5,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "#_source_vertex_end_index",
+        "kind": 5,
+        "importPath": "scripts.extract_cpu",
+        "description": "scripts.extract_cpu",
+        "peekOfCode": "#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:",
+        "detail": "scripts.extract_cpu",
+        "documentation": {}
+    },
+    {
+        "label": "is_float_number",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:\n        for line in infile:",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_ppr_keyword",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:\n        for line in infile:\n            pos = line.find(keyword)\n            if pos >= 0:\n                s = line.find(' ', pos)\n                t = line.find(' ', s+1)\n                if (is_float_number(line[s+1 : t])):\n                    throughput = line[s+1 : t]",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "get_source_vertex_ids",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def get_source_vertex_ids(filename):\n    ids = []\n    with open(filename) as infile:\n        for line in infile:\n            num = str(int(line))\n            if (len(num) > 0):\n                ids.append(num)\n    return ids\ndef extract_main_loop(extract_function):\n    for data_set in _data_sets:",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_main_loop",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_main_loop(extract_function):\n    for data_set in _data_sets:\n        print \"data_set=%s\" % data_set\n        for source_feature in _source_features:\n            source_vertex_file = _source_dir + '/' + data_set + '_' + source_feature + '.txt'\n            source_vertex_ids = get_source_vertex_ids(source_vertex_file)\n            source_vertex_ids = source_vertex_ids[_source_vertex_start_index:_source_vertex_end_index]\n            extract_function(data_set, source_vertex_ids)\ndef extract_batch_size(data_set, source_vertex_ids):\n    print \"=== extract_batch_size ===\"",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_batch_size",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_batch_size(data_set, source_vertex_ids):\n    print \"=== extract_batch_size ===\"\n    _batch_sizes = ['1', '10', '100', '1000', '10000', '100000', '1000000']\n    for batch_size in _batch_sizes:\n        throughput_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'batch_size_' + data_set + '_' + batch_size + '_' + source_vertex_id + '.txt'\n            throughput = extract_ppr_keyword(filename, 'ppr_throughput')\n            throughput_sum += throughput\n        avg_throughput = throughput_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_variant",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_variant(data_set, source_vertex_ids):\n    print \"=== extract_variant ===\"\n    _variants = ['0','1','2','3']\n    for variant in _variants:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'op_gpu_' + variant + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_epsilon",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_epsilon(data_set, source_vertex_ids):\n    print \"=== extract_epsilon ===\"\n    _errors = ['1e5', '1e6', '1e7', '1e8', '1e9', '1e10']\n    for error in _errors:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'error_gpu_' + error + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_source_features",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_source_features():\n    print \"=== extract_source_features ===\"\n    _source_features = ['top10', 'top1000', 'top1000000']\n    for data_set in _data_sets:\n        print \"data_set=%s\" % data_set\n        for source_feature in _source_features:\n            source_vertex_file = _source_dir + '/' + data_set + '_' + source_feature + '.txt'\n            source_vertex_ids = get_source_vertex_ids(source_vertex_file)\n            source_vertex_ids = source_vertex_ids[_source_vertex_start_index:_source_vertex_end_index]\n            latency_sum = 0",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "extract_batch_ratios",
+        "kind": 2,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "def extract_batch_ratios(data_set, source_vertex_ids):\n    print \"=== extract_batch_ratios ===\"\n    _batch_ratios = ['0.01', '0.001', '0.0001']\n    for batch_ratio in _batch_ratios:\n        latency_sum = 0\n        for source_vertex_id in source_vertex_ids:\n            filename = _log_dir + '/' + 'batch_ratio_' + batch_ratio + '_' + data_set + '_' + source_vertex_id + '.txt'\n            latency = extract_ppr_keyword(filename, 'ppr_latency')\n            latency_sum += latency\n        avg_latency = latency_sum / len(source_vertex_ids)",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_features",
+        "kind": 5,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "_source_features = ['top10']\n_log_dir='log'\n_source_dir='exp_vids'\n_source_vertex_start_index = 3\n_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_vertex_start_index",
+        "kind": 5,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "_source_vertex_start_index = 3\n_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "_source_vertex_end_index",
+        "kind": 5,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "_source_vertex_end_index = 4\n#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "#_source_vertex_start_index",
+        "kind": 5,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "#_source_vertex_start_index = 0\n#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "#_source_vertex_end_index",
+        "kind": 5,
+        "importPath": "scripts.extract_gpu",
+        "description": "scripts.extract_gpu",
+        "peekOfCode": "#_source_vertex_end_index = 10\ndef is_float_number(s):\n    try:\n        float(s)\n        return True\n    except ValueError:\n        return False\ndef extract_ppr_keyword(filename, keyword):\n    throughput = \"\"\n    with open(filename) as infile:",
+        "detail": "scripts.extract_gpu",
+        "documentation": {}
+    },
+    {
+        "label": "generate_tree",
+        "kind": 2,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "def generate_tree(dir_path, prefix=\"\"):\n    \"\"\"\n    Generate an ASCII tree representation of the directory structure\n    under dir_path, skipping items in SKIP_DIRS and SKIP_FILES.\n    \"\"\"\n    entries = []\n    try:\n        entries = sorted(os.listdir(dir_path))\n    except PermissionError:\n        return \"\"",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "collate_python_scripts",
+        "kind": 2,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "def collate_python_scripts():\n    \"\"\"\n    Writes the project directory structure and all .py scripts (skipping\n    configured dirs/files) into a Markdown file.\n    \"\"\"\n    # Generate tree\n    tree_str = generate_tree(SEARCH_DIR)\n    # Find all Python files\n    py_files = []\n    for root, dirs, files in os.walk(SEARCH_DIR):",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "SEARCH_DIR",
+        "kind": 5,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "SEARCH_DIR = \".\"\nOUTPUT_MD = \"./full_code/full_code_context.md\"\n# List any folder names to skip during the search/tree generation\nSKIP_DIRS = [\n    \"projects\",\n    \"__pycache__\",\n    \"dist\",\n    \"full_code\",\n    \".git\",\n    \".vscode\",",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "OUTPUT_MD",
+        "kind": 5,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "OUTPUT_MD = \"./full_code/full_code_context.md\"\n# List any folder names to skip during the search/tree generation\nSKIP_DIRS = [\n    \"projects\",\n    \"__pycache__\",\n    \"dist\",\n    \"full_code\",\n    \".git\",\n    \".vscode\",\n    \"instructions\",",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "SKIP_DIRS",
+        "kind": 5,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "SKIP_DIRS = [\n    \"projects\",\n    \"__pycache__\",\n    \"dist\",\n    \"full_code\",\n    \".git\",\n    \".vscode\",\n    \"instructions\",\n    \"html\",\n    \"params\",",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "SKIP_FILES",
+        "kind": 5,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "SKIP_FILES = [\n    \"__init__.py\",\n    \"context_builder.py\",\n    \"README.md\",\n    \"LICENSE\",\n    \".gitignore\",\n]\nSKIP_TYPES = [\".txt\", \".md\"]\ndef generate_tree(dir_path, prefix=\"\"):\n    \"\"\"",
+        "detail": "context_builder",
+        "documentation": {}
+    },
+    {
+        "label": "SKIP_TYPES",
+        "kind": 5,
+        "importPath": "context_builder",
+        "description": "context_builder",
+        "peekOfCode": "SKIP_TYPES = [\".txt\", \".md\"]\ndef generate_tree(dir_path, prefix=\"\"):\n    \"\"\"\n    Generate an ASCII tree representation of the directory structure\n    under dir_path, skipping items in SKIP_DIRS and SKIP_FILES.\n    \"\"\"\n    entries = []\n    try:\n        entries = sorted(os.listdir(dir_path))\n    except PermissionError:",
+        "detail": "context_builder",
+        "documentation": {}
+    }
+]

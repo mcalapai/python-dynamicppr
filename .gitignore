@@ -2,3 +2,7 @@
 pagerank
 encoder/encoder
 workload/workload
+context_builder.py
+full_code
+plans
+venv

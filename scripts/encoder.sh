@@ -1,7 +1,7 @@
 # transform data graph file from SNAP form to our BIN form
 # you need to specify DATA_DIR, DATA_SETS, IS_REVERSES 
-DATA_DIR=/data1/wentian/data
-DATA_SETS=(soc-pokec-relationships.txt com-youtube.ungraph.txt com-lj.ungraph.txt)
+DATA_DIR=/data
+DATA_SETS=(com-youtube.ungraph.txt)
 IS_REVERSES=(0 0 0)
 
 WORK_DIR=../encoder
