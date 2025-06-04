@@ -268,7 +268,7 @@ public:
                         IndexType off = vertex_offset[i] + j;
                         IndexType v = in_col_ind_ref[u][j];
                         bool is_frontier = false;
-                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v] + 1);
+                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v]);
                         ValueType prer = AtomicAddResidual(v, add);
                         ValueType curr = prer + add;
 
@@ -297,7 +297,7 @@ public:
                         IndexType off = vertex_offset[i] + j;
                         IndexType v = in_col_ind_ref[u][j];
                         bool is_frontier = false;
-                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v] + 1);
+                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v]);
                         ValueType prer = AtomicAddResidual(v, add); // residual is shared and handled by atomic
                         ValueType curr = prer + add;
 
