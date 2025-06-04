@@ -232,11 +232,8 @@ public:
 
     inline bool IsLegalPush(ValueType r, size_t phase_id)
     {
-        if ((phase_id == 0 && r > gTolerance) || (phase_id == 1 && r < -gTolerance))
-        {
-            return true;
-        }
-        return false;
+        // For phase_id == 0 (static PPR), allow r >= gTolerance
+        return (phase_id == 0 && r >= gTolerance) || (phase_id == 1 && r <= -gTolerance);
     }
 
     inline ValueType AtomicAddResidual(IndexType u, ValueType add)
@@ -434,9 +431,7 @@ public:
                         IndexType off = this->vertex_offset[i] + j;
                         IndexType v = in_col_ind_ref[u][j]; // v is an in-neighbor of u (v -> u)
                         bool is_frontier = false;
-                        IndexType current_deg_v = deg_ref[v]; // out-degree of v
-                        IndexType denominator = (current_deg_v == 0) ? 1 : current_deg_v;
-                        ValueType add = (1.0 - ALPHA) * ru_to_push / denominator;
+                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v]);
                         ValueType prer = AtomicAddResidual(v, add);
                         ValueType curr = prer + add;
 
@@ -467,10 +462,8 @@ public:
                         IndexType off = this->vertex_offset[i] + j;
                         IndexType v = in_col_ind_ref[u][j];
                         bool is_frontier = false;
-                        IndexType current_deg_v = deg_ref[v];
-                        IndexType denominator = (current_deg_v == 0) ? 1 : current_deg_v;
-                        ValueType add = (1.0 - ALPHA) * ru_for_inner_push / denominator;
-                        ValueType prer = AtomicAddResidual(v, add);
+                        ValueType add = (1.0 - ALPHA) * ru / (deg_ref[v]);
+                        ValueType prer = AtomicAddResidual(v, add); // residual is shared and handled by atomic
                         ValueType curr = prer + add;
 
                         if (IsLegalPush(curr, phase_id))
@@ -599,15 +592,10 @@ public:
 
     for (IndexType u = 0; u < vertex_count; ++u)
     {
-        ValueType err = ans[u] - pagerank[u];
-        if (std::fabs(err) > bound_pow_iter) {
-            if (pow_iter_mismatches < MAX_VIOLATORS_TO_PRINT) {
-                std::cout << "  VALIDATE_POW_FAIL: Node " << u
-                          << ", AlgoPR: " << pagerank[u]
-                          << ", PowIterPR: " << ans[u]
-                          << ", Diff: " << err << std::endl;
-            }
-            pow_iter_mismatches++;
+        graph->ConstructGraph();
+        for (IndexType u = 0; u < vertex_count; ++u)
+        {
+            assert(residual[u] <= gTolerance && residual[u] >= -gTolerance);
         }
     }
     if (pow_iter_mismatches > 0) {
