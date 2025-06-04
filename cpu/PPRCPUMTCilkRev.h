@@ -79,11 +79,8 @@ public:
 
     inline bool IsLegalPush(ValueType r, size_t phase_id)
     {
-        if ((phase_id == 0 && r > gTolerance) || (phase_id == 1 && r < -gTolerance))
-        {
-            return true;
-        }
-        return false;
+        // For phase_id == 0 (static PPR), allow r >= gTolerance
+        return (phase_id == 0 && r >= gTolerance) || (phase_id == 1 && r <= -gTolerance);
     }
 
     inline ValueType AtomicAddResidual(IndexType u, ValueType add)
@@ -361,7 +358,7 @@ public:
         graph->ConstructGraph();
         for (IndexType u = 0; u < vertex_count; ++u)
         {
-            assert(residual[u] < gTolerance && residual[u] > -gTolerance);
+            assert(residual[u] <= gTolerance && residual[u] >= -gTolerance);
         }
         PPRCPUPowVec *ppr_pow = new PPRCPUPowVec(graph);
         ppr_pow->CalPPRRev(source_vertex_id);
