@@ -319,7 +319,7 @@
         "kind": 5,
         "importPath": "context_builder",
         "description": "context_builder",
-        "peekOfCode": "SKIP_FILES = [\n    \"__init__.py\",\n    \"context_builder.py\",\n    \"README.md\",\n    \"LICENSE\",\n    \".gitignore\",\n]\nSKIP_TYPES = [\".txt\", \".md\"]\ndef generate_tree(dir_path, prefix=\"\"):\n    \"\"\"",
+        "peekOfCode": "SKIP_FILES = [\n    \"__init__.py\",\n    \"context_builder.py\",\n    \"README.md\",\n    \"LICENSE\",\n    \".gitignore\",\n    \"encoder\",\n    \"pagerank\",\n    \"workload\",\n    \".DS_Store\",",
         "detail": "context_builder",
         "documentation": {}
     },
@@ -328,7 +328,7 @@
         "kind": 5,
         "importPath": "context_builder",
         "description": "context_builder",
-        "peekOfCode": "SKIP_TYPES = [\".txt\", \".md\"]\ndef generate_tree(dir_path, prefix=\"\"):\n    \"\"\"\n    Generate an ASCII tree representation of the directory structure\n    under dir_path, skipping items in SKIP_DIRS and SKIP_FILES.\n    \"\"\"\n    entries = []\n    try:\n        entries = sorted(os.listdir(dir_path))\n    except PermissionError:",
+        "peekOfCode": "SKIP_TYPES = [\".txt\", \".md\", \".o\"]\ndef generate_tree(dir_path, prefix=\"\"):\n    \"\"\"\n    Generate an ASCII tree representation of the directory structure\n    under dir_path, skipping items in SKIP_DIRS and SKIP_FILES.\n    \"\"\"\n    entries = []\n    try:\n        entries = sorted(os.listdir(dir_path))\n    except PermissionError:",
         "detail": "context_builder",
         "documentation": {}
     }
